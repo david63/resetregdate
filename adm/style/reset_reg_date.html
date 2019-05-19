@@ -1,0 +1,68 @@
+{% include 'overall_header.html' %}
+
+{% INCLUDECSS '@david63_resetregdate/admin_forms.css' %}
+{% INCLUDECSS '@david63_resetregdate/jquery-ui.css' %}
+
+{% include 'head_panel.html' %}
+
+<form id="resetregdate" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('RESET_REG_DATE') }}</legend>
+		<dl>
+			<dt><label for="reset_username">{{ lang('USERNAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('USER_EXPLAIN') }}</span></dt>
+			<dd>
+				<input class="textbox" type="text" id="reset_username" name="reset_username" value="{{ RESET_USERNAME }}" />
+			</dd>
+			<dd>
+				[ <a href="{{ U_RESET_USERNAME }}" onclick="find_username(this.href); return false;">{{ lang('USERNAME') }}</a> ]
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="reset_reg_date">{{ lang('RESET_REG_DATE_TO') }}{{ lang('COLON') }}</label><br /><span>{{ lang('RESET_REG_DATE_TO_EXPLAIN') }}</span>
+			</dt>
+			<dd>
+				<input type="text" class="textbox" name="reset_reg_date" id="reset_reg_date" value="{{ RESET_REG_DATE }}" />&nbsp;&nbsp;&nbsp;{{ lang('CLICK_SELECT') }}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="reset_lv_date">{{ lang('RESET_LV_DATE_TO') }}{{ lang('COLON') }}</label><br /><span>{{ lang('RESET_LV_DATE_TO_EXPLAIN') }}</span>
+			</dt>
+			<dd>
+				<input type="text" class="textbox" name="reset_lv_date" id="reset_lv_date" value="{{ RESET_LV_DATE }}"/>&nbsp;&nbsp;&nbsp;{{ lang('CLICK_SELECT') }}
+			</dd>
+	</fieldset>
+
+	<fieldset>
+		<p class="submit-buttons">
+			<input class="adm-button" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+			<input class="adm-button" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		</p>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<script>
+	var closeText 		= '{{ lang('CLOSE_TEXT') | escape('js') }}';
+	var currentTextDate = '{{ lang('CURRENT_TEXT_DATE') | escape('js') }}';
+	var currentTextTime = '{{ lang('CURRENT_TEXT_TIME') | escape('js') }}';
+	var dayNamesMin 	= '{{ lang('DAY_NAMES_MIN') | escape('js') }}';
+	var hourText 		= '{{ lang('HOUR_TEXT') | escape('js') }}';
+	var isRTL 			= '{{ RTL_LANGUAGE | escape('js') }}';
+	var minuteText 		= '{{ lang('MINUTE_TEXT') | escape('js') }}';
+	var monthNames 		= '{{ lang('MONTH_NAMES') | escape('js') }}';
+	var nextText 		= '{{ lang('NEXT_TEXT') | escape('js') }}';
+	var prevText 		= '{{ lang('PREV_TEXT') | escape('js') }}';
+	var timeText 		= '{{ lang('TIME_TEXT') | escape('js') }}';
+	var timezone 		= '{{ TIMEZONE | escape('js') }}';
+</script>
+
+{% INCLUDEJS '@david63_resetregdate/jquery-ui.js' %}
+{% INCLUDEJS '@david63_resetregdate/jquery-timepicker.js' %}
+{% INCLUDEJS '@david63_resetregdate/config.js' %}
+
+{% include '@david63_resetregdate/donate.html' %}
+{% include 'overall_footer.html' %}
