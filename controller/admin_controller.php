@@ -10,7 +10,6 @@
 namespace david63\resetregdate\controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use phpbb\db\driver\driver_interface;
 use phpbb\request\request;
 use phpbb\template\template;
