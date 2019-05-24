@@ -57,7 +57,7 @@ class admin_controller implements admin_interface
 	* @param \phpbb\template\template			$template	Template object
 	* @param \phpbb\user						$user		User object
 	* @param \phpbb\log\log						$log		Log object
-	* @param phpbb\language\language			$language	Language object
+	* @param \phpbb\language\language			$language	Language object
 	* @param string 							$root_path	phpBB root path
 	* @param string 							$php_ext	phpBB extension
 	*
