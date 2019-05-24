@@ -52,28 +52,28 @@ class admin_controller implements admin_interface
 	/**
 	* Constructor for admin controller
 	*
-	* @param \phpbb\db\driver\driver_interface	$db			The db connection
-	* @param \phpbb\request\request				$request	Request object
-	* @param \phpbb\template\template			$template	Template object
-	* @param \phpbb\user						$user		User object
-	* @param \phpbb\log\log						$log		Log object
-	* @param \phpbb\language\language			$language	Language object
-	* @param string 							$root_path	phpBB root path
-	* @param string 							$php_ext	phpBB extension
+	* @param \phpbb\db\driver\driver_interface	$db					The db connection
+	* @param \phpbb\request\request				$request			Request object
+	* @param \phpbb\template\template			$template			Template object
+	* @param \phpbb\user						$user				User object
+	* @param \phpbb\log\log						$log				Log object
+	* @param \phpbb\language\language			$language			Language object
+	* @param string 				            $phpbb_root_path	phpBB root path
+	* @param string								$php_ext			phpBB file extension
 	*
 	* @return \david63\resetregdate\controller\admin_controller
 	* @access public
 	*/
-	public function __construct(driver_interface $db, request $request, template $template, user $user, log $log, language $language, $root_path, $php_ext)
+	public function __construct(driver_interface $db, request $request, template $template, user $user, log $log, language $language, $phpbb_root_path, $php_ext)
 	{
-		$this->db  			= $db;
-		$this->request		= $request;
-		$this->template		= $template;
-		$this->user			= $user;
-		$this->log			= $log;
-		$this->language		= $language;
-		$this->root_path	= $root_path;
-		$this->phpEx		= $php_ext;
+		$this->db  				= $db;
+		$this->request			= $request;
+		$this->template			= $template;
+		$this->user				= $user;
+		$this->log				= $log;
+		$this->language			= $language;
+		$this->phpbb_root_path	= $phpbb_root_path;
+		$this->php_ext			= $php_ext;
 	}
 
 	/**
@@ -190,7 +190,19 @@ class admin_controller implements admin_interface
 			'TIMEZONE'			=> $timezone->getOffset(new \DateTime) / 60, // In minutes
 
 			'U_ACTION'			=> $this->u_action,
-			'U_RESET_USERNAME'	=> append_sid("{$this->root_path}memberlist.$this->phpEx", 'mode=searchuser&amp;form=resetregdate&amp;field=reset_username&amp;select_single=true'),
+			'U_RESET_USERNAME'	=> append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", 'mode=searchuser&amp;form=resetregdate&amp;field=reset_username&amp;select_single=true'),
 		));
+	}
+
+	/**
+	* Set page url
+	*
+	* @param string $u_action Custom form action
+	* @return null
+	* @access public
+	*/
+	public function set_page_url($u_action)
+	{
+		return $this->u_action = $u_action;
 	}
 }
