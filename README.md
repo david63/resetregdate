@@ -23,7 +23,7 @@ Adds an Admin option to reset a user's registration date.
 
 ## Uninstall
 1. Navigate in the ACP to `Customise -> Manage extensions`.
-2. Click the `Disable` link for `User details`.
+2. Click the `Disable` link for `Reset registration date`.
 3. To permanently uninstall, click `Delete Data`, then delete the resetregdate folder from `phpBB/ext/david63/`.
 
 ## License
