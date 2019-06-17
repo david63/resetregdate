@@ -15,7 +15,7 @@ use phpbb\template\template;
 use phpbb\user;
 use phpbb\log\log;
 use phpbb\language\language;
-use david63\resetregdate\ext;
+use david63\resetregdate\core\functions;
 
 /**
 * Admin controller
@@ -46,25 +46,33 @@ class admin_controller implements admin_interface
 	/** @var string PHP extension */
 	protected $php_ext;
 
+	/** @var \david63\resetregdate\core\functions */
+	protected $functions;
+
+	/** @var string phpBB tables */
+	protected $tables;
+
 	/** @var string Custom form action */
 	protected $u_action;
 
 	/**
 	* Constructor for admin controller
 	*
-	* @param \phpbb\db\driver\driver_interface	$db					The db connection
-	* @param \phpbb\request\request				$request			Request object
-	* @param \phpbb\template\template			$template			Template object
-	* @param \phpbb\user						$user				User object
-	* @param \phpbb\log\log						$log				Log object
-	* @param \phpbb\language\language			$language			Language object
-	* @param string 				            $phpbb_root_path	phpBB root path
-	* @param string								$php_ext			phpBB file extension
+	* @param \phpbb\db\driver\driver_interface		$db					The db connection
+	* @param \phpbb\request\request					$request			Request object
+	* @param \phpbb\template\template				$template			Template object
+	* @param \phpbb\user							$user				User object
+	* @param \phpbb\log\log							$log				Log object
+	* @param \phpbb\language\language				$language			Language object
+	* @param string 				            	$phpbb_root_path	phpBB root path
+	* @param string									$php_ext			phpBB file extension
+	* @param \david63\resetregdate\core\functions	$functions			Functions for the extension
+	* @param array									$tables				phpBB db tables
 	*
 	* @return \david63\resetregdate\controller\admin_controller
 	* @access public
 	*/
-	public function __construct(driver_interface $db, request $request, template $template, user $user, log $log, language $language, $phpbb_root_path, $php_ext)
+	public function __construct(driver_interface $db, request $request, template $template, user $user, log $log, language $language, $phpbb_root_path, $php_ext, functions $functions, $tables)
 	{
 		$this->db  				= $db;
 		$this->request			= $request;
@@ -74,6 +82,8 @@ class admin_controller implements admin_interface
 		$this->language			= $language;
 		$this->phpbb_root_path	= $phpbb_root_path;
 		$this->php_ext			= $php_ext;
+		$this->functions		= $functions;
+		$this->tables			= $tables;
 	}
 
 	/**
@@ -85,11 +95,13 @@ class admin_controller implements admin_interface
 	public function display_output()
 	{
 		// Add the language files
-		$this->language->add_lang('acp_resetregdate', 'david63/resetregdate');
-		$this->language->add_lang('date_time_picker', 'david63/resetregdate');
+		$this->language->add_lang('acp_resetregdate', $this->functions->get_ext_namespace());
+		$this->language->add_lang('date_time_picker', $this->functions->get_ext_namespace());
 
 		$form_key = 'reset_reg_date';
 		add_form_key($form_key);
+
+		$back = false;
 
 		$reset_username	= $this->request->variable('reset_username', '', true);
 		$reset_lv_date	= $this->request->variable('reset_lv_date', '');
@@ -108,7 +120,7 @@ class admin_controller implements admin_interface
 			if (!empty($reset_username))
 			{
 				$sql = 'SELECT user_id
-					FROM ' . USERS_TABLE . "
+					FROM ' . $this->tables['users'] . "
 					WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string($reset_username)) . "'";
 
 				$result		= $this->db->sql_query($sql);
@@ -141,7 +153,11 @@ class admin_controller implements admin_interface
 				$sql_set = '';
 				if ($reset_reg_date)
 				{
-					$sql_set = 'user_regdate = ' . (int) strtotime($reset_reg_date) . ', ';
+					$sql_set = 'user_regdate = ' . (int) strtotime($reset_reg_date);
+					if ($reset_lv_date)
+					{
+						$sql_set .= ', ';
+					}
 				}
 
 				if ($reset_lv_date)
@@ -149,7 +165,7 @@ class admin_controller implements admin_interface
 					$sql_set .= 'user_lastvisit = ' . (int) strtotime($reset_lv_date);
 				}
 
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . $this->tables['users'] . '
 					SET ' . $sql_set . '
 					WHERE user_id = ' . (int) $user_id;
 
@@ -169,16 +185,19 @@ class admin_controller implements admin_interface
 
 		// Template vars for header panel
 		$this->template->assign_vars(array(
-			'ERROR_DESCRIPTION'	=> implode('<br />', $errors),
+			'ERROR_DESCRIPTION'	=> implode('<br>', $errors),
 			'ERROR_TITLE'		=> $this->language->lang('WARNING'),
 
 			'HEAD_TITLE'		=> $this->language->lang('RESET_REGISTRATION_DATE'),
 			'HEAD_DESCRIPTION'	=> $this->language->lang('RESET_REGISTRATION_DATE_EXPLAIN'),
 
-			'S_ERROR'			=> (count($errors)) ? true : false,
-			'S_BACK'			=> $back,
+			'NAMESPACE'			=> $this->functions->get_ext_namespace('twig'),
 
-			'VERSION_NUMBER'	=> ext::RESET_REGISTRATION_DATE_VERSION,
+			'S_BACK'			=> $back,
+			'S_ERROR'			=> (count($errors)) ? true : false,
+			'S_VERSION_CHECK'	=> $this->functions->version_check(),
+
+			'VERSION_NUMBER'	=> $this->functions->get_this_version(),
 		));
 
 		$this->template->assign_vars(array(

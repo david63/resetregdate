@@ -39,6 +39,8 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'CLICK_SELECT'						=> 'Click in textbox to select date/time',
 
+	'NEW_VERSION'						=> 'New Version',
+	'NEW_VERSION_EXPLAIN'		   		=> 'There is a newer version of this extension available.',
 	'NO_DATE'							=> 'A reset registration or last visit date has not been entered.',
 	'NO_USER'							=> 'The selected user does not exist in the database',
 	'NO_USER_SPECIFIED'					=> 'No user selected',
@@ -52,7 +54,7 @@ $lang = array_merge($lang, array(
 	'RESET_REGISTRATION_DATE_EXPLAIN'	=> 'Here you can reset a user’s original date of registration and/or last visit.',
 
 	'USER_EXPLAIN'						=> 'Select the required user',
-	'USER_REG_DATE_RESET'				=> 'Successfully reset the registration/last visit date for %1$s.',
+	'USER_REG_DATE_RESET'				=> 'Successfully reset the registration/last visit date for <strong>%1$s</strong>.',
 
 	'VERSION'							=> 'Version',
 ));

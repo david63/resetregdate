@@ -38,6 +38,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_USER_UTILS'			=> 'User utilities',
-	'LOG_USER_REGDATE_RESET'	=> '<strong>Reset registration and/or last visit date for</strong><br />» %1$s',
+	'LOG_USER_REGDATE_RESET'	=> '<strong>Reset registration and/or last visit date for</strong><br>» %1$s',
 	'RESET_REG_DATE'			=> 'Reset registration',
 ));

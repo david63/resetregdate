@@ -1,15 +1,10 @@
-{% include 'overall_header.html' %}
-
-{% INCLUDECSS '@david63_resetregdate/admin_forms.css' %}
-{% INCLUDECSS '@david63_resetregdate/jquery-ui.css' %}
-
-{% include 'head_panel.html' %}
+{% include '@' ~ NAMESPACE ~ '/head_panel.html' %}
 
 <form id="resetregdate" method="post" action="{{ U_ACTION }}">
 	<fieldset>
 		<legend>{{ lang('RESET_REG_DATE') }}</legend>
 		<dl>
-			<dt><label for="reset_username">{{ lang('USERNAME') }}{{ lang('COLON') }}</label><br /><span>{{ lang('USER_EXPLAIN') }}</span></dt>
+			<dt><label for="reset_username">{{ lang('USERNAME') }}{{ lang('COLON') }}</label><br><span>{{ lang('USER_EXPLAIN') }}</span></dt>
 			<dd>
 				<input class="textbox" type="text" id="reset_username" name="reset_username" value="{{ RESET_USERNAME }}" />
 			</dd>
@@ -20,7 +15,7 @@
 
 		<dl>
 			<dt>
-				<label for="reset_reg_date">{{ lang('RESET_REG_DATE_TO') }}{{ lang('COLON') }}</label><br /><span>{{ lang('RESET_REG_DATE_TO_EXPLAIN') }}</span>
+				<label for="reset_reg_date">{{ lang('RESET_REG_DATE_TO') }}{{ lang('COLON') }}</label><br><span>{{ lang('RESET_REG_DATE_TO_EXPLAIN') }}</span>
 			</dt>
 			<dd>
 				<input type="text" class="textbox" name="reset_reg_date" id="reset_reg_date" value="{{ RESET_REG_DATE }}" />&nbsp;&nbsp;&nbsp;{{ lang('CLICK_SELECT') }}
@@ -29,7 +24,7 @@
 
 		<dl>
 			<dt>
-				<label for="reset_lv_date">{{ lang('RESET_LV_DATE_TO') }}{{ lang('COLON') }}</label><br /><span>{{ lang('RESET_LV_DATE_TO_EXPLAIN') }}</span>
+				<label for="reset_lv_date">{{ lang('RESET_LV_DATE_TO') }}{{ lang('COLON') }}</label><br><span>{{ lang('RESET_LV_DATE_TO_EXPLAIN') }}</span>
 			</dt>
 			<dd>
 				<input type="text" class="textbox" name="reset_lv_date" id="reset_lv_date" value="{{ RESET_LV_DATE }}"/>&nbsp;&nbsp;&nbsp;{{ lang('CLICK_SELECT') }}
@@ -60,9 +55,4 @@
 	var timezone 		= '{{ TIMEZONE | escape('js') }}';
 </script>
 
-{% INCLUDEJS '@david63_resetregdate/jquery-ui.js' %}
-{% INCLUDEJS '@david63_resetregdate/jquery-timepicker.js' %}
-{% INCLUDEJS '@david63_resetregdate/config.js' %}
-
-{% INCLUDE '@david63_resetregdate/donate.html' %}
-{% INCLUDE 'overall_footer.html' %}
+{% include '@' ~ NAMESPACE ~ '/donate.html' %}
