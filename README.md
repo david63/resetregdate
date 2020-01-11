@@ -7,6 +7,7 @@ Adds an Admin option to reset a user's registration date.
 [![Latest Stable Version](https://poser.pugx.org/david63/resetregdate/v/stable)](https://packagist.org/packages/david63/resetregdate)
 [![Latest Unstable Version](https://poser.pugx.org/david63/resetregdate/v/unstable)](https://packagist.org/packages/david63/resetregdate)
 [![Total Downloads](https://poser.pugx.org/david63/resetregdate/downloads)](https://packagist.org/packages/david63/resetregdate)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0a8ffe710d934f6a959713177b18d5ce)](https://www.codacy.com/manual/david63/resetregdate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=david63/resetregdate&amp;utm_campaign=Badge_Grade)
 
 ## Minimum Requirements
 * phpBB 3.2.0
