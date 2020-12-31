@@ -12,8 +12,12 @@ services:
             - '%core.php_ext%'
             - '@david63.resetregdate.core.functions'
             - '%tables%'
+            - '%core.root_path%ext/david63/resetregdate/adm/style/images'
 
     david63.resetregdate.core.functions:
         class: david63\resetregdate\core\functions
         arguments:
             - '@ext.manager'
+
+    _defaults:
+        public: true

@@ -2,8 +2,8 @@
 	"name": "david63/resetregdate",
 	"type": "phpbb-extension",
 	"description": "Adds an Admin option to reset a user's registration date.",
-	"version": "3.1.0-RC1",
-	"time": "2020-01-10",
+	"version": "3.1.0-RC2",
+	"time": "2020-07-22",
 	"license": "GPL-2.0-only",
 	"authors": [{
 			"name": "David Wood",
@@ -15,7 +15,7 @@
         "composer/installers": "~1.0"
     },
 	"extra": {
-		"display-name": "[**] Reset registration date",
+		"display-name": "Reset registration date",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.3.0"
     	},

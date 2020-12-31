@@ -52,6 +52,9 @@ class admin_controller implements admin_interface
 	/** @var string phpBB tables */
 	protected $tables;
 
+	/** @var string */
+	protected $ext_images_path;
+
 	/** @var string Custom form action */
 	protected $u_action;
 
@@ -68,11 +71,12 @@ class admin_controller implements admin_interface
 	* @param string									$php_ext			phpBB file extension
 	* @param \david63\resetregdate\core\functions	$functions			Functions for the extension
 	* @param array									$tables				phpBB db tables
+	* @param string									$ext_images_path	Path to this extension's images
 	*
 	* @return \david63\resetregdate\controller\admin_controller
 	* @access public
 	*/
-	public function __construct(driver_interface $db, request $request, template $template, user $user, log $log, language $language, $phpbb_root_path, $php_ext, functions $functions, $tables)
+	public function __construct(driver_interface $db, request $request, template $template, user $user, log $log, language $language, $phpbb_root_path, $php_ext, functions $functions, $tables, $ext_images_path)
 	{
 		$this->db  				= $db;
 		$this->request			= $request;
@@ -84,6 +88,7 @@ class admin_controller implements admin_interface
 		$this->php_ext			= $php_ext;
 		$this->functions		= $functions;
 		$this->tables			= $tables;
+		$this->ext_images_path	= $ext_images_path;
 	}
 
 	/**
@@ -95,9 +100,7 @@ class admin_controller implements admin_interface
 	public function display_output()
 	{
 		// Add the language files
-		$this->language->add_lang('acp_resetregdate', $this->functions->get_ext_namespace());
-		$this->language->add_lang('acp_common', $this->functions->get_ext_namespace());
-		$this->language->add_lang('date_time_picker', $this->functions->get_ext_namespace());
+		$this->language->add_lang(array('acp_resetregdate', 'date_time_picker', 'acp_common'), $this->functions->get_ext_namespace());
 
 		$form_key = 'reset_reg_date';
 		add_form_key($form_key);
@@ -108,7 +111,7 @@ class admin_controller implements admin_interface
 		$reset_lv_date	= $this->request->variable('reset_lv_date', '');
 		$reset_reg_date	= $this->request->variable('reset_reg_date', '');
 
-		$errors = array();
+		$errors = [];
 		$back 	= false;
 
 		if ($this->request->is_set_post('submit'))
@@ -182,16 +185,31 @@ class admin_controller implements admin_interface
 			}
 		}
 
+		// Need to do some timezone checking before we go any further
+		// Does the user have a timezone set?
+		if (!$this->user->data['user_timezone'])
+		{
+			trigger_error($this->language->lang('NO_TIMEZONE_SET'), E_USER_WARNING);
+		}
+
+		// Is the user's timezone valid?
+		// This should never happen!
+		if (!in_array($this->user->data['user_timezone'], timezone_identifiers_list()))
+		{
+			trigger_error($this->language->lang('INVALID_USER_TIMEZONE'), E_USER_WARNING);
+		}
+
 		$timezone = new \DateTimeZone($this->user->data['user_timezone']);
 
 		// Template vars for header panel
 		$version_data	= $this->functions->version_check();
 
 		$this->template->assign_vars(array(
-			'DOWNLOAD'			=> (array_key_exists('download', $version_data)) ? '<a href =' . $version_data['download'] . '>' . $this->language->lang('NEW_VERSION_LINK') . '</a>' : '',
+			'DOWNLOAD'			=> (array_key_exists('download', $version_data)) ? '<a class="download" href =' . $version_data['download'] . '>' . $this->language->lang('NEW_VERSION_LINK') . '</a>' : '',
 
 			'ERROR_DESCRIPTION'	=> implode('<br>', $errors),
 			'ERROR_TITLE'		=> $this->language->lang('WARNING'),
+			'EXT_IMAGE_PATH' 	=> $this->ext_images_path,
 
 			'HEAD_TITLE'		=> $this->language->lang('RESET_REGISTRATION_DATE'),
 			'HEAD_DESCRIPTION'	=> $this->language->lang('RESET_REGISTRATION_DATE_EXPLAIN'),

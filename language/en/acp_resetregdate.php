@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -39,7 +39,10 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'CLICK_SELECT'						=> 'Click in textbox to select date/time',
 
+	'INVALID_USER_TIMEZONE'				=> 'There is a problem with your timezone setting in the UCP.',
+
 	'NO_DATE'							=> 'A reset registration or last visit date has not been entered.',
+	'NO_TIMEZONE_SET'					=> 'You do not have a timezone set in your UCP - please set this before you can continue.',
 	'NO_USER'							=> 'The selected user does not exist in the database',
 	'NO_USER_SPECIFIED'					=> 'No user selected',
 
